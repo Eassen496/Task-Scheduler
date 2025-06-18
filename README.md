@@ -1,1 +1,1 @@
-# test-exercise-go
+# GO - Тестовое Задание
