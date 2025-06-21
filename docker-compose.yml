@@ -1,0 +1,8 @@
+services:
+  taskscheduler:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    restart: on-failure:3
