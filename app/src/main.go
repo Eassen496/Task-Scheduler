@@ -37,7 +37,7 @@ type Task struct {
 func processTask(task *Task) {
 	slog.Info("Task routine started", "task_id", task.ID.String())
 
-	startTime := time.Now()
+	startTime := time.Now().UTC()
 	taskDuration := time.Duration(rand.Int64N(3)+3) * time.Minute
 
 	shouldFail := rand.IntN(100) < 20
@@ -60,9 +60,9 @@ func processTask(task *Task) {
 
 			tasksMutex.Lock()
 			if task.Status != "deleted" {
-				now := time.Now()
+				now := time.Now().UTC()
 				task.CompletionTime = &now
-				task.ProcessingDuration = task.CompletionTime.Sub(*task.StartTime)
+				task.ProcessingDuration = task.CompletionTime.Sub(*task.StartTime) / 1000000000
 
 				if shouldFail {
 					task.Status = "failed"
@@ -93,7 +93,7 @@ func processTask(task *Task) {
 			tasksMutex.RUnlock()
 
 			tasksMutex.Lock()
-			task.ProcessingDuration = time.Since(*task.StartTime)
+			task.ProcessingDuration = time.Since(*task.StartTime) / 1000000000
 			tasksMutex.Unlock()
 		}
 	}
@@ -102,7 +102,7 @@ func processTask(task *Task) {
 func postHandler(c *gin.Context) {
 	newTask := &Task{
 		ID:           uuid.New(),
-		CreationTime: time.Now(),
+		CreationTime: time.Now().UTC(),
 		Status:       "pending",
 	}
 
