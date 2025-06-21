@@ -20,7 +20,6 @@
 ## English
 
   <picture><img src="https://badge42.vercel.app/api/v2/clf048y1p00110fmbm8csxx03/stats?cursusId=21&coalitionId=undefined"/></picture>
-
 ### Introduction
 
 This project presents a robust and efficient in-memory task management API built with Go (Golang). Designed to handle long-running, asynchronous operations, this service provides a simple yet powerful interface for submitting tasks, tracking their lifecycle, and retrieving their results. Adhering to the principle of "no third-party services," all task data is meticulously managed and stored directly within the service's memory, showcasing a strong command of concurrent programming and resource management in Go.
@@ -170,7 +169,6 @@ This solution serves as a foundational component for systems requiring reliable 
 ## Русский
 
   <picture><img src="https://badge42.vercel.app/api/v2/clf048y1p00110fmbm8csxx03/stats?cursusId=21&coalitionId=undefined"/></picture>
-
 ### Введение
 
 Данный проект представляет собой надежный и эффективный API для управления задачами, работающий в оперативной памяти**, построенный на Go (Golang). Разработанный для обработки долгосрочных асинхронных операций, этот сервис предоставляет простой, но мощный интерфейс для отправки задач, отслеживания их жизненного цикла и получения результатов. Придерживаясь принципа "без сторонних сервисов", все данные задач тщательно управляются и хранятся непосредственно в памяти сервиса, демонстрируя уверенное владение параллельным программированием и управлением ресурсами в Go.
