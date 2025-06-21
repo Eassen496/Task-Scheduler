@@ -5,21 +5,20 @@
     2. [Requirement](#requirement)
     3. [How to Run](#how-to-run)
         - [Docker](#docker)
-        - [Bare-metal](bare-metal)
-    4. [API Endpoints](#api-endpoint)
-    5. [Key Design Decisions](#key-design)
-- [Русский](#Russian)
+        - [Bare-metal](#bare-metal)
+    4. [API Endpoints](#api-endpoints)
+    5. [Key Design Decisions](#key-design-decisions)
+- [Русский](#Русский)
     1. [Введение](#введение)
     2. [Требования](#требования)
     3. [Как запустить](#как-запустить)
-    4. [Эндпоинты API](#эндпоинты-api)
+    4. [API Эндпоинты](#api-эндпоинты)
     5. [Ключевые проектные решения](#ключевые-проектные-решения)
 
 ---
 
 ## English
 
-  <picture><img src="https://badge42.vercel.app/api/v2/clf048y1p00110fmbm8csxx03/stats?cursusId=21&coalitionId=undefined"/></picture>
 ### Introduction
 
 This project presents a robust and efficient in-memory task management API built with Go (Golang). Designed to handle long-running, asynchronous operations, this service provides a simple yet powerful interface for submitting tasks, tracking their lifecycle, and retrieving their results. Adhering to the principle of "no third-party services," all task data is meticulously managed and stored directly within the service's memory, showcasing a strong command of concurrent programming and resource management in Go.
@@ -37,50 +36,51 @@ This solution serves as a foundational component for systems requiring reliable 
 ### How To Run
 
 ##### 1. Clone the repository:
-    ```bash
+```bash
     git clone https://github.com/Eassen496/workmate-go
     cd [workmate-go]
-    ```
+```
 
 #### Docker
 
 ##### 2. Build and Run Containers using `Makefile`:
-    Use the `make` command to orchestrate Docker Compose:
-    ```bash
+Use the `make` command to orchestrate Docker Compose:
+```bash
     make up
-    ```
-    This command will build the Docker image (if not already built) and start the container in detached mode.
+```
+This command will build the Docker image (if not already built) and start the container in detached mode.
 
 ##### 3. View Logs (optional):
-    To view the service logs, use:
-    ```bash
+To view the service logs, use:
+```bash
     make logs
-    ```
-
+```
 ##### 4. Stop and Clean Up (optional):
-    To stop and remove containers, networks, images, and volumes associated with the project:
-    ```bash
+To stop and remove containers, networks, images, and volumes associated with the project:
+```bash
     make clean
-    ```
-    The server will be available at `http://localhost:8080`.
+```
+The server will be available at `http://localhost:8080`.
 
 #### Bare-metal
 
 ##### 2. Build the application:
-    To build the application:
-    ```bash
+
+To build the application:
+```bash
     cd ./app/src
     go mod download
     go build . -o taskScheduler
-    ```
-    This commands will build the application.
+```
+This commands will build the application.
+
+
 
 ##### 3. Start the app:
-    Launch the application:
-    ```bash
+Launch the application:
+```bash
     ./taskScheduler
-    ```
-
+```
 ### API Endpoints
 
 #### 1. Create a New Task
@@ -94,10 +94,10 @@ This solution serves as a foundational component for systems requiring reliable 
     ```
 * **Example Response (HTTP 201 Created):**
     ```json
-    {
-        "id": "a1b2c3d4-e5f6-4789-9012-34567890abcd",
-        "status": "pending",
-        "creationTime": "2025-06-21T04:30:00Z"
+  {
+      "id": "d4ed1190-f5dc-4449-ae6b-599e18952ddd",
+      "status": "pending",
+      "creationTime": "2025-06-21T16:07:53.323050002Z"
     }
     ```
 
@@ -108,29 +108,29 @@ This solution serves as a foundational component for systems requiring reliable 
 * **Description:** Retrieves the current status, creation time, processing duration, and results (if completed) or error (if failed/deleted) of a specific task.
 * **Example Request (using `curl`):**
     ```bash
-    curl http://localhost:8080/a1b2c3d4-e5f6-4789-9012-34567890abcd
+    curl http://localhost:8080/d4ed1190-f5dc-4449-ae6b-599e18952ddd
     ```
 * **Example Response (HTTP 200 OK - In Progress):**
     ```json
     {
-        "id": "a1b2c3d4-e5f6-4789-9012-34567890abcd",
+        "id": "d4ed1190-f5dc-4449-ae6b-599e18952ddd",
         "status": "in_progress",
         "creationTime": "2025-06-21T04:30:00Z",
         "startTime": "2025-06-21T04:30:00Z",
-        "processingDuration": 150000000000
+        "processingDuration": 110
     }
     ```
 * **Example Response (HTTP 200 OK - Completed):**
     ```json
     {
-        "id": "a1b2c3d4-e5f6-4789-9012-34567890abcd",
-        "status": "completed",
-        "creationTime": "2025-06-21T04:30:00Z",
-        "startTime": "2025-06-21T04:30:00Z",
-        "completionTime": "2025-06-21T04:34:00Z",
-        "processingDuration": 240000000000,
-        "result": "Task completed successfully!"
-    }
+      "id": "d4ed1190-f5dc-4449-ae6b-599e18952ddd",
+      "status": "completed",
+      "creationTime": "2025-06-21T16:07:53.323050002Z",
+      "startTime": "2025-06-21T16:07:53.323930335Z",
+      "completionTime": "2025-06-21T16:10:53.33098996Z",
+      "processingDuration": 180,
+      "result": "Task completed successfully!"
+    }                         
     ```
 * **Example Response (HTTP 404 Not Found):**
     ```json
@@ -146,12 +146,12 @@ This solution serves as a foundational component for systems requiring reliable 
 * **Description:** Marks an existing task for deletion. The background processing for the task will be signaled to terminate gracefully.
 * **Example Request (using `curl`):**
     ```bash
-    curl -X DELETE http://localhost:8080/a1b2c3d4-e5f6-4789-9012-34567890abcd
+    curl -X DELETE http://localhost:8080/d4ed1190-f5dc-4449-ae6b-599e18952ddd
     ```
 * **Example Response (HTTP 200 OK):**
     ```json
     {
-        "message": "Task 'a1b2c3d4-e5f6-4789-9012-34567890abcd' marked for deletion. It will cease processing shortly."
+        "message": "Task 'd4ed1190-f5dc-4449-ae6b-599e18952ddd' marked for deletion. It will cease processing shortly."
     }
     ```
 
@@ -162,13 +162,12 @@ This solution serves as a foundational component for systems requiring reliable 
 * **Simulated Task Logic:** Tasks simulate their duration using `time.Sleep` and randomly simulate success or failure, updating their status accordingly.
 * **Graceful Deletion:** Tasks can be marked for deletion via the API, and their respective goroutines are designed to detect this signal and terminate gracefully.
 * **Structured Logging (`log/slog`):** Utilizes Go's modern structured logging for clear, machine-readable output, aiding in monitoring and debugging.
-* **Gin Framework:** Used for simplified HTTP routing and request/response handlin
+* **Gin Framework:** Used for simplified HTTP routing and request/response handling
 
 ---
 
 ## Русский
 
-  <picture><img src="https://badge42.vercel.app/api/v2/clf048y1p00110fmbm8csxx03/stats?cursusId=21&coalitionId=undefined"/></picture>
 ### Введение
 
 Данный проект представляет собой надежный и эффективный API для управления задачами, работающий в оперативной памяти**, построенный на Go (Golang). Разработанный для обработки долгосрочных асинхронных операций, этот сервис предоставляет простой, но мощный интерфейс для отправки задач, отслеживания их жизненного цикла и получения результатов. Придерживаясь принципа "без сторонних сервисов", все данные задач тщательно управляются и хранятся непосредственно в памяти сервиса, демонстрируя уверенное владение параллельным программированием и управлением ресурсами в Go.
@@ -186,49 +185,49 @@ This solution serves as a foundational component for systems requiring reliable 
 ### Как запустить
 
 #### 1. Клонировать репозиторий:
-    ```bash
+```bash
     git clone https://github.com/Eassen496/workmate-go
-    cd workmate-go
-    ```
+    cd [workmate-go]
+```
 
 #### Docker
 
 ##### 2. Собрать и запустить контейнеры с использованием `Makefile`:
-    Используйте команду `make` для управления Docker Compose:
-    ```bash
+Используйте команду `make` для управления Docker Compose:
+```bash
     make up
-    ```
-    Эта команда соберет образ Docker (если он еще не собран) и запустит контейнер в фоновом режиме.
+```
+Эта команда соберет образ Docker (если он еще не собран) и запустит контейнер в фоновом режиме.
 
 ##### 3. Просмотр логов (необязательно):
-    Для просмотра логов сервиса используйте:
-    ```bash
+Для просмотра логов сервиса используйте:
+```bash
     make logs
-    ```
+```
 
 ##### 4. Остановка и очистка (необязательно):
-    Для остановки и удаления контейнеров, сетей, образов и томов, связанных с проектом:
-    ```bash
+Для остановки и удаления контейнеров, сетей, образов и томов, связанных с проектом:
+```bash
     make clean
-    ```
-    Сервер будет доступен по адресу `http://localhost:8080`.
+```
+Сервер будет доступен по адресу `http://localhost:8080`.
 
 #### На "голом железе"
 
 ##### 2. Собрать приложение:
-    Для сборки приложения:
-    ```bash
+Для сборки приложения:
+```bash
     cd ./app/src
     go mod download
     go build . -o taskScheduler
-    ```
-    Эти команды соберут приложение.
+```
+Эти команды соберут приложение.
 
 ##### 3. Запустить приложение:
-    Запустите приложение:
-    ```bash
+Запустите приложение:
+```bash
     ./taskScheduler
-    ```
+```
 
 ### API Эндпоинты
 
@@ -242,11 +241,11 @@ This solution serves as a foundational component for systems requiring reliable 
     curl -X POST http://localhost:8080/
     ```
 * **Пример ответа (HTTP 201 Created):**
-    ```json
+    ```json  
     {
-        "id": "a1b2c3d4-e5f6-4789-9012-34567890abcd",
-        "status": "pending",
-        "creationTime": "2025-06-21T04:30:00Z"
+      "id": "d4ed1190-f5dc-4449-ae6b-599e18952ddd",
+      "status": "pending",
+      "creationTime": "2025-06-21T16:07:53.323050002Z"
     }
     ```
 
@@ -257,29 +256,29 @@ This solution serves as a foundational component for systems requiring reliable 
 * **Описание:** Получает текущий статус, время создания, продолжительность обработки и результаты (если завершена) или ошибку (если не удалось/удалена) конкретной задачи.
 * **Пример запроса (с использованием `curl`):**
     ```bash
-    curl http://localhost:8080/a1b2c3d4-e5f6-4789-9012-34567890abcd
+    curl http://localhost:8080/d4ed1190-f5dc-4449-ae6b-599e18952ddd
     ```
 * **Пример ответа (HTTP 200 OK - В процессе):**
     ```json
     {
-        "id": "a1b2c3d4-e5f6-4789-9012-34567890abcd",
+        "id": "d4ed1190-f5dc-4449-ae6b-599e18952ddd",
         "status": "in_progress",
         "creationTime": "2025-06-21T04:30:00Z",
         "startTime": "2025-06-21T04:30:00Z",
-        "processingDuration": 150000000000
+        "processingDuration": 110
     }
     ```
 * **Пример ответа (HTTP 200 OK - Завершена):**
     ```json
     {
-        "id": "a1b2c3d4-e5f6-4789-9012-34567890abcd",
-        "status": "completed",
-        "creationTime": "2025-06-21T04:30:00Z",
-        "startTime": "2025-06-21T04:30:00Z",
-        "completionTime": "2025-06-21T04:34:00Z",
-        "processingDuration": 240000000000,
-        "result": "Task completed successfully!"
-    }
+      "id": "d4ed1190-f5dc-4449-ae6b-599e18952ddd",
+      "status": "completed",
+      "creationTime": "2025-06-21T16:07:53.323050002Z",
+      "startTime": "2025-06-21T16:07:53.323930335Z",
+      "completionTime": "2025-06-21T16:10:53.33098996Z",
+      "processingDuration": 180,
+      "result": "Task completed successfully!"
+    }    
     ```
 * **Пример ответа (HTTP 404 Not Found):**
     ```json
@@ -295,20 +294,20 @@ This solution serves as a foundational component for systems requiring reliable 
 * **Описание:** Помечает существующую задачу для удаления. Фоновая обработка задачи будет сигнализирована о необходимости корректного завершения.
 * **Пример запроса (с использованием `curl`):**
     ```bash
-    curl -X DELETE http://localhost:8080/a1b2c3d4-e5f6-4789-9012-34567890abcd
+    curl -X DELETE http://localhost:8080/d4ed1190-f5dc-4449-ae6b-599e18952ddd
     ```
 * **Пример ответа (HTTP 200 OK):**
     ```json
     {
-        "message": "Task 'a1b2c3d4-e5f6-4789-9012-34567890abcd' marked for deletion. It will cease processing shortly."
+        "message": "Task 'd4ed1190-f5dc-4449-ae6b-599e18952ddd' marked for deletion. It will cease processing shortly."
     }
     ```
 
 ### Ключевые проектные решения
 
-* **Конкурентность с использованием горутин и мьютексов:** Долгосрочные задачи выполняются в отдельных горутинах, чтобы предотвратить блокировку основного HTTP-сервера. Для обеспечения безопасного одновременного доступа к карте задач, находящейся в памяти, используется `sync.RWMutex`.
+* **Конкурентность с использованием goroutine и mutex:** Долгосрочные задачи выполняются в отдельных goroutine, чтобы предотвратить блокировку основного HTTP-сервера. Для обеспечения безопасного одновременного доступа к карте задач, находящейся в памяти, используется `sync.RWMutex`.
 * **Хранение данных в памяти:** Все данные задач хранятся в `map[uuid.UUID]*Task` в памяти приложения, что соответствует требованию об отсутствии внешних баз данных или очередей.
 * **Логика симуляции задач:** Задачи симулируют свою продолжительность с помощью `time.Sleep` и случайным образом симулируют успех или неудачу, соответствующим образом обновляя свой статус.
-* **Корректное удаление:** Задачи могут быть помечены для удаления через API, и соответствующие горутины предназначены для обнаружения этого сигнала и корректного завершения работы.
+* **Корректное удаление:** Задачи могут быть помечены для удаления через API, и соответствующие goroutine предназначены для обнаружения этого сигнала и корректного завершения работы.
 * **Структурированное логирование (`log/slog`):** Используется современное структурированное логирование Go для четкого, машиночитаемого вывода, что облегчает мониторинг и отладку.
 * **Фреймворк Gin:** Используется для упрощения маршрутизации HTTP и обработки запросов/ответов.
