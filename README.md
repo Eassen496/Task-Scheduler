@@ -37,7 +37,7 @@ This solution serves as a foundational component for systems requiring reliable 
 
 ##### 1. Clone the repository:
 ```bash
-    git clone https://github.com/Eassen496/workmate-go
+    git clone https://github.com/Eassen496/Task-Scheduler
     cd [workmate-go]
 ```
 
